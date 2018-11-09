@@ -150,6 +150,12 @@ export default class GooglePublisherTag extends Component {
     slotRefresher: slot => googletag.pubads().refresh([slot]),
   };
 
+  constructor(props) {
+    super(props);
+
+    this.isInitialized = false;
+  }
+  
   componentDidMount() {
     initGooglePublisherTag(this.props);
 
@@ -250,7 +256,12 @@ export default class GooglePublisherTag extends Component {
 
     // display new slot
     googletag.display(id);
-    this.props.slotRefresher(slot);
+
+    if (this.isInitialized) {
+      this.props.slotRefresher(slot);
+    } else {
+      this.isInitialized = true;
+    }
   }
 
   removeSlot() {
